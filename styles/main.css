@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Teko:wght@300;400;500;600;700&display=swap");
+
+* {
+  font-family: "Open Sans", sans-serif;
+  /* font-family: "Teko", sans-serif; */
+}
+body {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-size: 14px;
+  margin: 0;
+  box-sizing: border-box;
+}
+#nav {
+  background-color: #1a1a1a;
+  height: 50 px;
+  border-bottom: 1px solid #000000;
+
+}

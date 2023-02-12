@@ -1,0 +1,14 @@
+#chatroom{
+    display: grid;
+    grid-template-columns: 200px 800px;
+}
+#chatrom_participants{
+    border-right: 1px solid #1a1a1a;
+}
+
+.message_wrapper{
+    background-color: #363739;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+}
