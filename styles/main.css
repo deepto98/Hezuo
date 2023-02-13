@@ -6,7 +6,7 @@
 }
 body {
   background-color: #1a1a1a;
-  color: #ffffff;
+  color: #ffb8b8;
   font-size: 14px;
   margin: 0;
   box-sizing: border-box;
@@ -14,6 +14,6 @@ body {
 #nav {
   background-color: #1a1a1a;
   height: 50 px;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid #ffda79;
 
 }

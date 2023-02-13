@@ -23,7 +23,15 @@
             </div>
 
             <div class="member_wrapper">
-                <span class="active"></span>
+                <span class="active_identifier"></span>
+                <p>Anon</p>
+            </div>
+            <div class="member_wrapper">
+                <span class="active_identifier"></span>
+                <p>Anon</p>
+            </div>
+            <div class="member_wrapper">
+                <span class="active_identifier"></span>
                 <p>Anon</p>
             </div>
         </section>
@@ -51,7 +59,17 @@
             </div>
 
         </section>
+        <div id="chatroom_message">
+            <form  id="chatroom_message_form">
+                <input type="text" required name="message" id="">
+            </form>
+        </div>
+
     </main>
 </body>
+<!-- https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Web_v1.5.1.zip -->
+<script src="js/agora-rtm-sdk-1.5.1.js"></script>
+<script type="module" src="js/chatroom.js"></script>
+<!-- <script src="env.js" type="module"></script> -->
 
 </html>
