@@ -14,14 +14,25 @@ let startRoom = async () => {
   await channel.join();
 
   channel.on("ChannelMessage", (messageData, memberId) => {
-    let data = JSON.stringify(messageData.text);
+    let data = JSON.parse(messageData.text);
+    addMessageToDom(data.message, memberId);
     console.log("Data", data);
   });
+
+  let addMessageToDom = (messageData, memberId) => {
+    let messagesWrapper = document.getElementById('chatroom_chatwindow');
+    let message = `<div class="message_wrapper">
+                        <p>${memberId}</p>
+                        <p>${messageData}</p>
+                    </div>`;
+    messagesWrapper.insertAdjacentHTML("beforeend", message);
+  };
 
   let sendMessage = async (e) => {
     e.preventDefault();
     let message = e.target.message.value;
     channel.sendMessage({ text: JSON.stringify({ message: message }) });
+    addMessageToDom(message, uid);
     e.target.reset();
   };
 
