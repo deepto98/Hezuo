@@ -25,12 +25,16 @@ let startRoom = async () => {
     addParticipantToDom(memberId);
   });
 
+  channel.on("MemberLeft", (memberId) => {
+    removeParticipantFromDom(memberId);
+  });
+
   let addParticipantToDom = async (memberId) => {
     let membersWrapper = document.getElementById("chatroom_participants");
-    let memberItem = `            <div class="member_wrapper">
-                                      <span class="active_identifier"></span>
-                                      <p>${memberId}</p>
-                                  </div>`;
+    let memberItem = `<div id="member_${memberId}_wrapper" class="member_wrapper">
+                        <span class="active_identifier"></span>
+                        <p>${memberId}</p>
+                      </div>`;
     membersWrapper.innerHTML += memberItem;
   };
 
@@ -61,6 +65,17 @@ let startRoom = async () => {
       addParticipantToDom(participant);
     });
   };
+
+  let removeParticipantFromDom = (memberId) => {
+    document.getElementById(`member_${memberId}_wrapper`).remove();;
+  };
+
+  let leaveRoom = async () => {
+    await channel.leave();
+    await rtmClient.logout();
+  };
+  window.addEventListener("beforeunload", leaveRoom);
+  
   getParticipants();
 };
 
