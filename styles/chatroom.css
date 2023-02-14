@@ -2,8 +2,13 @@
   display: grid;
   grid-template-columns: 200px 800px;
 }
-#chatrom_participants {
+#chatroom_participants {
   border-right: 1px solid #1a1a1a;
+}
+
+#chatroom_chatwindow{
+  height: 100vh;
+  overflow: auto;
 }
 
 .message_wrapper {
