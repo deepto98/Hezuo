@@ -12,6 +12,7 @@ let room = urlParams.get("room");
 if (room === null) {
   room = "default";
 }
+let displayName = sessionStorage.getItem("username");
 
 let startRoom = async () => {
   let rtmClient = await AgoraRTM.createInstance(agoraAppId);
