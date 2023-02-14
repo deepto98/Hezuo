@@ -6,7 +6,12 @@ messages.scrollTop = messages.scrollHeight;
 let agoraAppId = AGORA_APP_ID;
 let token = null;
 let uid = String(Math.floor(Math.random() * 232));
-let room = "default";
+
+let urlParams = new URLSearchParams(window.location.search);
+let room = urlParams.get("room");
+if (room === null) {
+  room = "default";
+}
 
 let startRoom = async () => {
   let rtmClient = await AgoraRTM.createInstance(agoraAppId);
@@ -67,7 +72,7 @@ let startRoom = async () => {
   };
 
   let removeParticipantFromDom = (memberId) => {
-    document.getElementById(`member_${memberId}_wrapper`).remove();;
+    document.getElementById(`member_${memberId}_wrapper`).remove();
   };
 
   let leaveRoom = async () => {
@@ -75,7 +80,7 @@ let startRoom = async () => {
     await rtmClient.logout();
   };
   window.addEventListener("beforeunload", leaveRoom);
-  
+
   getParticipants();
 };
 
