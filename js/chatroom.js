@@ -10,9 +10,9 @@ let uid = String(Math.floor(Math.random() * 232));
 let urlParams = new URLSearchParams(window.location.search);
 let room = urlParams.get("room");
 
-let name = sessionStorage.getItem("username");
+let displayName = sessionStorage.getItem("username");
 
-if (room === null || name === null) {
+if (room === null || displayName === null) {
   window.location = "join.htm";
 }
 
@@ -36,14 +36,18 @@ let startRoom = async () => {
 
   channel.on("MemberJoined", (memberId) => {
     addParticipantToDom(memberId);
+    updateParticipantsCount();
   });
 
   channel.on("MemberLeft", (memberId) => {
     removeParticipantFromDom(memberId);
+    updateParticipantsCount();
   });
 
   let addParticipantToDom = async (memberId) => {
-    let { displayName } = await rtmClient.getUserAttributesByKeys(memberId, ["displayName"]);
+    let { displayName } = await rtmClient.getUserAttributesByKeys(memberId, [
+      "displayName",
+    ]);
 
     let membersWrapper = document.getElementById("chatroom_participants");
     let memberItem = `<div id="member_${memberId}_wrapper" class="member_wrapper">
@@ -54,7 +58,9 @@ let startRoom = async () => {
   };
 
   let addMessageToDom = async (messageData, memberId) => {
-    let { displayName } = await rtmClient.getUserAttributesByKeys(memberId, ["displayName"]);
+    let { displayName } = await rtmClient.getUserAttributesByKeys(memberId, [
+      "displayName",
+    ]);
 
     let messages = document.getElementById("chatroom_chatwindow");
     let messageWrapper = `<div class="message_wrapper">
@@ -75,12 +81,21 @@ let startRoom = async () => {
   let chatroomForm = document.getElementById("chatroom_message_form");
   chatroomForm.addEventListener("submit", sendMessage);
 
+  let updateParticipantsCount = async () => {
+    let members = await channel.getMembers();
+    let count = members.length;
+    let participantCounter = document.getElementById(
+      "chatroom_participants_count"
+    );
+    participantCounter.innerHTML = count;
+  };
+
   let getParticipants = async (e) => {
     let participants = await channel.getMembers();
-    console.log(participants);
     participants.forEach((participant, index, array) => {
       addParticipantToDom(participant);
     });
+    return participants;
   };
 
   let removeParticipantFromDom = (memberId) => {
@@ -94,6 +109,7 @@ let startRoom = async () => {
   window.addEventListener("beforeunload", leaveRoom);
 
   getParticipants();
+  updateParticipantsCount();
 };
 
 startRoom();
