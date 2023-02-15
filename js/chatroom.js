@@ -9,10 +9,12 @@ let uid = String(Math.floor(Math.random() * 232));
 
 let urlParams = new URLSearchParams(window.location.search);
 let room = urlParams.get("room");
-if (room === null) {
-  room = "default";
+
+let name = sessionStorage.getItem("username");
+
+if (room === null || name === null) {
+  window.location = "join.htm";
 }
-let displayName = sessionStorage.getItem("username");
 
 let startRoom = async () => {
   let rtmClient = await AgoraRTM.createInstance(agoraAppId);
@@ -20,6 +22,11 @@ let startRoom = async () => {
 
   const channel = await rtmClient.createChannel(room);
   await channel.join();
+
+  //Store username
+  await rtmClient.addOrUpdateLocalUserAttributes({
+    displayName: displayName,
+  });
 
   channel.on("ChannelMessage", (messageData, memberId) => {
     let data = JSON.parse(messageData.text);
@@ -36,18 +43,22 @@ let startRoom = async () => {
   });
 
   let addParticipantToDom = async (memberId) => {
+    let { displayName } = await rtmClient.getUserAttributesByKeys(memberId, ["displayName"]);
+
     let membersWrapper = document.getElementById("chatroom_participants");
     let memberItem = `<div id="member_${memberId}_wrapper" class="member_wrapper">
                         <span class="active_identifier"></span>
-                        <p>${memberId}</p>
+                        <p>${displayName}</p>
                       </div>`;
     membersWrapper.innerHTML += memberItem;
   };
 
-  let addMessageToDom = (messageData, memberId) => {
+  let addMessageToDom = async (messageData, memberId) => {
+    let { displayName } = await rtmClient.getUserAttributesByKeys(memberId, ["displayName"]);
+
     let messages = document.getElementById("chatroom_chatwindow");
     let messageWrapper = `<div class="message_wrapper">
-                        <p>${memberId}</p>
+                        <p>${displayName}</p>
                         <p>${messageData}</p>
                     </div>`;
     messages.insertAdjacentHTML("beforeend", messageWrapper);
